@@ -1,0 +1,19 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: #333333 !important;
+}
+
+
+.bg-color-primary{
+  background-color: #e3e3e3;
+}
+
+.bg-color-secondary{
+  
+}
+
