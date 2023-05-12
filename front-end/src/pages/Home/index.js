@@ -48,6 +48,7 @@ export const Home = () =>{
               </Col>
             </Row>
         </Form>
+          {genero.length === 0  && <span>Carregando ...</span>}
           {genero.map((generos)=>{
               return(
                 <Col sm={12} md={8} lg={6} xl={5} className="m-auto" key={generos.id}>

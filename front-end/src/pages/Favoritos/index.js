@@ -1,46 +1,47 @@
 import { useEffect, useState } from "react"
+import { Cards } from "../../components/Card"
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 export const Favoritos = () =>{
 
-    const [music, setMusic] = useState([])
+  const [idMusic, setIdMusic] = useState([])
 
-    useEffect(()=>{
-        const playlist = JSON.parse(localStorage.getItem('@music'))
-        setMusic(JSON.parse(playlist) || [])
-    },[])
-
-    function handleDelete(id){
-        let filtroMusic = music.filter((item)=>{
-          return(item.id !== id)
-        })
-    
-        setMusic(filtroFilmes);
-        localStorage.setItem('@music', JSON.stringify(filtroMusic))
-        alert('Musica removida com sucesso!')
-    }
-
+   useEffect(() =>{
+    (async () =>{
+      const response = await fetch(`https://localhost:6000/favoritos/${idMusic}`);
+      const data = await response.json();
+      console.log(data)
+      const favoritoData = data.data.map((item) => {
+        return {
+          id: item.id,
+          picture: item.album.cover_medium,
+          title: item.title,
+          genero: item.genre_id,
+          preview: item.preview
+        };
+      });
+      setIdMusic(favoritoData);
+    })();
+   })
     
   return (
     <div>
-        <Header></Header>
-        <div className="container container-fav">
-          <h1 className="fav">Meus Filme Favoritos</h1>
-
-          {music.length === 0 && <span>Sua lista de favoritos está vazio</span>}
-
-          <ul>
-            {music.map((item)=>{
-                  return(
-                    <li key={item.id} className="">
-                      <span className="titulo">{item.nome}</span>
-                      <div className="opcoes">
-                        <button  onClick={ ()=> handleDelete(item.id)}>Excluir</button>
-                      </div>
-                    </li>
-                  )
-                })}
-          </ul>
-        </div>
+         {idMusic.length === 0  && <span>Carregando ...</span>}
+          {idMusic.map((generos)=>{
+              return(
+                <Col sm={12} md={8} lg={6} xl={5} className="m-auto" key={generos.id}>
+                  <Cards
+                    id={generos.id}
+                    img={generos.picture}
+                    alt={generos.title}
+                    title={generos.title}
+                    genero={generos.genero}
+                    music={generos.preview}                    
+                  />
+                </Col>
+              )
+          })}
     </div>
   );
 }
