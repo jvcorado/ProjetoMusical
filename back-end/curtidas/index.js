@@ -3,13 +3,14 @@ const axios = require('axios')
 const bodyParser = require('body-parser')
 const app = express()
 const cors = require('cors');
+const { v4: uuidv4} = require("uuid")
 
 app.use (bodyParser.json());
 app.use(cors({origin: "*"}));
 app.use(express.json());
 
 contador = 0;
-
+const curtidasPorFavoritosID = {}
 
 const favoritos = {}
 
@@ -23,26 +24,25 @@ async function apiDataFavoritos(id){
     }
  }
 
-app.get('/favoritos', async (req,res) =>{
+app.get('/favoritos/:id/curtidas', async (req,res) =>{
     //const id = req.params.id;
     //res.send(await apiDataFavoritos(id))
-    res.send(favoritos)
+    res.send(curtidasPorFavoritosID)
 })
 
-app.put('/favoritos', async (req,res) =>{
-    contador++
+app.put('/favoritos/:id/curtidas', async (req,res) =>{
+    const idCurtidas = uuidv4();
     const { musica } = req.body;
-    favoritos[contador] = {
-        contador, musica
-    };
+    const curtidasDoFavoritos = curtidasPorFavoritosID[req.params.id] || [];
+    curtidasDoFavoritos.push({ id: idCurtidas, musica });
+    curtidasPorFavoritosID[req.params.id] = curtidasDoFavoritos;
     await axios.post("https://localhost:10000/eventos", {
-        type: "favoritos",
+        type: "CurtidasCriadas",
         dados:{
-            contador,
-            musica,
+            id: idCurtidas, musica, favoritosId: req.params.id
         },
     })
-    res.status(201).send(favoritos[contador])
+    res.status(201).send(curtidasDoFavoritos)
 })
 
 app.post("/eventos", (req, res) => {
@@ -54,6 +54,6 @@ module.exports = {
     apiDataFavoritos,
  };
 
-app.listen(4000, ()=>{
-    console.log("Favoritos. Porta 4000")
+app.listen(5000, ()=>{
+    console.log("Favoritos. Porta 5000")
 })
