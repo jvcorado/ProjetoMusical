@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import { Container, Form } from 'react-bootstrap'
 import { useEffect, useState } from "react";
 import { Genero } from "../../api";
+import { Cabecalho } from "../../components/Header";
 
 export const Home = () =>{
 
@@ -32,23 +33,10 @@ export const Home = () =>{
   
 
   return(
-    <Container fluid className="bg-white">
-      <Row className="gap-5 pt-4 p-0 pd-md-3 p-0 m-0">
-        <h1 className="text-center">Romantify</h1>
-        <Form>
-            <Row>
-              <Col>
-                <Form.Control 
-                  type="text" 
-                  name="" id="" 
-                  placeholder="Buscar"
-                  value={cantor}
-                  onChange={(e) => setCantor(e.target.value)}
-                />
-              </Col>
-            </Row>
-        </Form>
-          {genero.length === 0  && <span>Carregando ...</span>}
+    <div className="bg-dark w-100">
+      <Cabecalho value={cantor} onChange={(e) => setCantor(e.target.value)}/>
+      <Row className="gap-5 pt-4 p-0 m-0  ">
+          {genero.length === 0  && <div style={{height:'85.9vh'}} className="pt-5 d-flex flex-column align-items-center text-center text-white"><h1>Bem-vindo à página de busca!</h1> <h5>Aqui, você encontrará um universo de músicas para explorar.</h5></div>}
           {genero.map((generos)=>{
               return(
                 <Col sm={12} md={8} lg={6} xl={5} className="m-auto" key={generos.id}>
@@ -64,6 +52,6 @@ export const Home = () =>{
               )
           })}
       </Row>
-    </Container>
+    </div>
   )
 }

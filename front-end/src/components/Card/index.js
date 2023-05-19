@@ -13,11 +13,11 @@ export const Cards = ({id,img, alt, title,cantores,music}) => {
     <Col className="p-0 m-0 m-auto shadow-lg w-100 d-flex bg-color-primary p-3 gap-3 align-items-center justify-content-between rounded-4">
         <img src={img} alt={alt} className="rounded-3 shadow-lg" style={{width:'130px'}}/>
         <div className='d-flex flex-column flex-fill gap-2'>
-          <div className="flex-fill">
+          <div className="flex-fill text-white text-left">
               <h5>{title}</h5>
               <span>{cantores}</span>
           </div>
-          <div className='d-flex flex-column flex-lg-row gap-3'>
+          <div className='d-flex flex-column flex-lg-row-reverse gap-3'>
             <Button onClick={()=> curtiu()} className='w-25 shadow-lg btn btn-dark'>
               <i class="fa-regular fa-heart"></i>
             </Button>
